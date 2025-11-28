@@ -25,12 +25,14 @@
           # Output file
           output="$out/rust-example.txt"
 
-          # Generate header with directory structure
-          echo "# rust-example Directory Structure" > "$output"
+          # Generate header with file list
+          echo "# rust-example" > "$output"
           echo "" >> "$output"
-          echo '```' >> "$output"
-          ${pkgs.tree}/bin/tree -a --noreport "$src" | tail -n +2 >> "$output"
-          echo '```' >> "$output"
+          echo "Files:" >> "$output"
+          find "$src" -type f | sort | while read -r file; do
+            relpath="''${file#$src/}"
+            echo "- $relpath" >> "$output"
+          done
           echo "" >> "$output"
           echo "---" >> "$output"
           echo "" >> "$output"
