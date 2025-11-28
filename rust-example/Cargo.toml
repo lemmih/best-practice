@@ -1,0 +1,8 @@
+[package]
+name = "rust-example"
+version = "0.1.0"
+edition = "2021"
+description = "A simple Rust project example for illustrating best practices"
+license = "MIT"
+
+[dependencies]
