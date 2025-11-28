@@ -10,6 +10,7 @@ Universal guidelines for AI agents and developers. This file is used verbatim ac
 ## Pull Requests
 
 - Use `gh pr create --title "Your title" --body "Description"` to open PRs
+- PR titles should follow the same Conventional Commits format as commit messages (see below)
 - Link related issues when applicable
 
 ## Commits
