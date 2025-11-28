@@ -29,3 +29,16 @@ feat: add user authentication
 fix(auth): resolve null pointer in login
 docs: update installation guide
 ```
+
+## Design Guidelines
+
+### Pinned Dependencies
+
+Pinning dependencies is vital for reproducible builds and reducing bit rot.
+
+**Examples:**
+- Using Nix for reproducible environments
+- Pinning the exact channel in `rust-toolchain.toml`
+- Pinning GitHub Actions runners (e.g., `ubuntu-24.04` instead of `ubuntu-latest`)
+- Pinning CVE databases (used by tools like `cargo-audit`)
+- Committing lock files (e.g., `package-lock.json`, `Cargo.lock`)
