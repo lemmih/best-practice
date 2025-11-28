@@ -67,6 +67,9 @@
           # Check formatting of Rust code
           rustfmt = craneLib.cargoFmt { inherit src; };
 
+          # Check formatting of Cargo.toml
+          taplo = craneLib.taploFmt { inherit src; };
+
           # Run tests
           test = craneLib.cargoNextest (commonArgs // { cargoNextestExtraArgs = "--no-fail-fast"; });
 
@@ -100,6 +103,7 @@
             cargo-nextest
             alejandra
             statix
+            taplo
           ];
         };
       }
