@@ -1,7 +1,8 @@
 [package]
 name = "rust-example"
 version = "0.1.0"
-edition = "2021"
+# To check the most recent edition: rustc --edition=2100 2>&1 | grep -oP '\d{4}(?=\|future)'
+edition = "2024"
 description = "A simple Rust project example for illustrating best practices"
 license = "MIT"
 
