@@ -45,8 +45,11 @@
           strictDeps = true;
         };
 
+        # Build only the dependencies for caching
+        cargoArtifacts = craneLib.buildDepsOnly commonArgs;
+
         # Build the crate
-        crate = craneLib.buildPackage commonArgs;
+        crate = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
 
         # Nix source - only include nix files for nix checks
         nixSrc = pkgs.lib.sources.sourceFilesBySuffices ./. [ ".nix" ];
@@ -60,6 +63,7 @@
           clippy = craneLib.cargoClippy (
             commonArgs
             // {
+              inherit cargoArtifacts;
               cargoClippyExtraArgs = "--all-targets -- --deny warnings";
             }
           );
@@ -71,7 +75,7 @@
           taplo = craneLib.taploFmt { inherit src; };
 
           # Run tests
-          test = craneLib.cargoNextest (commonArgs // { cargoNextestExtraArgs = "--no-fail-fast"; });
+          test = craneLib.cargoNextest (commonArgs // { inherit cargoArtifacts; cargoNextestExtraArgs = "--no-fail-fast"; });
 
           # Audit dependencies for security vulnerabilities
           audit = craneLib.cargoAudit {
