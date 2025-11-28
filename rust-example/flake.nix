@@ -15,21 +15,19 @@
     };
   };
 
-  outputs =
-    {
-      self,
-      nixpkgs,
-      crane,
-      rust-overlay,
-      flake-utils,
-      advisory-db,
-    }:
+  outputs = {
+    self,
+    nixpkgs,
+    crane,
+    rust-overlay,
+    flake-utils,
+    advisory-db,
+  }:
     flake-utils.lib.eachDefaultSystem (
-      system:
-      let
+      system: let
         pkgs = import nixpkgs {
           inherit system;
-          overlays = [ (import rust-overlay) ];
+          overlays = [(import rust-overlay)];
         };
 
         # Use rust-toolchain.toml to configure the Rust toolchain
@@ -49,12 +47,11 @@
         cargoArtifacts = craneLib.buildDepsOnly commonArgs;
 
         # Build the crate
-        crate = craneLib.buildPackage (commonArgs // { inherit cargoArtifacts; });
+        crate = craneLib.buildPackage (commonArgs // {inherit cargoArtifacts;});
 
         # Nix source - only include nix files for nix checks
-        nixSrc = pkgs.lib.sources.sourceFilesBySuffices ./. [ ".nix" ];
-      in
-      {
+        nixSrc = pkgs.lib.sources.sourceFilesBySuffices ./. [".nix"];
+      in {
         checks = {
           # Build the crate as a check
           inherit crate;
@@ -69,13 +66,17 @@
           );
 
           # Check formatting of Rust code
-          rustfmt = craneLib.cargoFmt { inherit src; };
+          rustfmt = craneLib.cargoFmt {inherit src;};
 
           # Check formatting of Cargo.toml
-          taplo = craneLib.taploFmt { inherit src; };
+          taplo = craneLib.taploFmt {inherit src;};
 
           # Run tests
-          test = craneLib.cargoNextest (commonArgs // { inherit cargoArtifacts; cargoNextestExtraArgs = "--no-fail-fast"; });
+          test = craneLib.cargoNextest (commonArgs
+            // {
+              inherit cargoArtifacts;
+              cargoNextestExtraArgs = "--no-fail-fast";
+            });
 
           # Audit dependencies for security vulnerabilities
           audit = craneLib.cargoAudit {
@@ -83,13 +84,13 @@
           };
 
           # Check Nix formatting with alejandra
-          alejandra = pkgs.runCommand "alejandra-check" { buildInputs = [ pkgs.alejandra ]; } ''
+          alejandra = pkgs.runCommand "alejandra-check" {buildInputs = [pkgs.alejandra];} ''
             alejandra --check ${nixSrc}
             touch $out
           '';
 
           # Lint Nix files with statix
-          statix = pkgs.runCommand "statix-check" { buildInputs = [ pkgs.statix ]; } ''
+          statix = pkgs.runCommand "statix-check" {buildInputs = [pkgs.statix];} ''
             statix check ${nixSrc}
             touch $out
           '';
@@ -99,7 +100,7 @@
 
         devShells.default = pkgs.mkShell {
           # Include inputs from the package build
-          inputsFrom = [ crate ];
+          inputsFrom = [crate];
 
           # Additional dev-shell tools
           packages = with pkgs; [
