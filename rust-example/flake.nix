@@ -68,13 +68,14 @@
 
         packages.default = crate;
 
-        devShells.default = craneLib.devShell {
-          # Inherit inputs from checks
-          checks = self.checks.${system};
+        devShells.default = pkgs.mkShell {
+          # Include inputs from the package build
+          inputsFrom = [ crate ];
 
           # Additional dev-shell tools
           packages = with pkgs; [
             cargo-audit
+            cargo-nextest
             nixfmt-rfc-style
           ];
         };
