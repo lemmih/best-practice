@@ -26,7 +26,7 @@
       in {
         packages = {
           default = pages;
-          pages = pages;
+          inherit pages;
         };
 
         # Linting and formatting checks
