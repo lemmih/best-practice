@@ -13,7 +13,8 @@ output_dir="$3"
   --metadata title="best-practice" \
   --css="" \
   --output "$output_dir/index.html" \
-  --include-in-header=<(cat << 'STYLE'
+  --include-in-header=<(
+    cat <<'STYLE'
 <style>
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -42,4 +43,4 @@ output_dir="$3"
   }
 </style>
 STYLE
-)
+  )
