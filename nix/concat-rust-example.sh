@@ -7,36 +7,48 @@ set -euo pipefail
 src_dir="$1"
 output="$2"
 
-# Files to include (relative to source dir)
-files=(
-  "rust-example/.gitignore"
-  "rust-example/Cargo.lock"
-  "rust-example/Cargo.toml"
-  "rust-example/flake.nix"
-  "rust-example/rust-toolchain.toml"
-  "rust-example/src/main.rs"
-  ".github/workflows/rust-example.yml"
-)
+# Dynamically find all files in rust-example/ plus specific extra files
+mapfile -t rust_example_files < <(find "$src_dir/rust-example" -type f | sort)
+extra_files=("$src_dir/.github/workflows/rust-example.yml")
 
 # Generate header with file list
 echo "# rust-example" > "$output"
 echo "" >> "$output"
 echo "Files:" >> "$output"
-for file in "${files[@]}"; do
-  echo "- $file" >> "$output"
+for file in "${rust_example_files[@]}"; do
+  relpath="${file#$src_dir/}"
+  echo "- $relpath" >> "$output"
+done
+for file in "${extra_files[@]}"; do
+  if [[ -f "$file" ]]; then
+    relpath="${file#$src_dir/}"
+    echo "- $relpath" >> "$output"
+  fi
 done
 echo "" >> "$output"
 echo "---" >> "$output"
 echo "" >> "$output"
 
-# Concatenate each file
-for file in "${files[@]}"; do
-  filepath="$src_dir/$file"
-  if [[ -f "$filepath" ]]; then
-    echo "## File: $file" >> "$output"
+# Concatenate each file from rust-example/
+for file in "${rust_example_files[@]}"; do
+  relpath="${file#$src_dir/}"
+  echo "## File: $relpath" >> "$output"
+  echo "" >> "$output"
+  echo '```' >> "$output"
+  cat "$file" >> "$output"
+  echo "" >> "$output"
+  echo '```' >> "$output"
+  echo "" >> "$output"
+done
+
+# Concatenate extra files
+for file in "${extra_files[@]}"; do
+  if [[ -f "$file" ]]; then
+    relpath="${file#$src_dir/}"
+    echo "## File: $relpath" >> "$output"
     echo "" >> "$output"
     echo '```' >> "$output"
-    cat "$filepath" >> "$output"
+    cat "$file" >> "$output"
     echo "" >> "$output"
     echo '```' >> "$output"
     echo "" >> "$output"
