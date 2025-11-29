@@ -33,14 +33,13 @@
         checks = {
           # Nix linting with statix
           statix = pkgs.runCommand "statix-check" {buildInputs = [pkgs.statix];} ''
-            cd ${self}
-            statix check .
+            statix check ${./.}
             touch $out
           '';
 
           # Nix formatting with alejandra
           alejandra = pkgs.runCommand "alejandra-check" {buildInputs = [pkgs.alejandra];} ''
-            alejandra --check ${self}/*.nix
+            alejandra --check ${./.}
             touch $out
           '';
         };
