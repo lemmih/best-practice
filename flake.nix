@@ -42,6 +42,18 @@
             alejandra --check ${./.}
             touch $out
           '';
+
+          # Shell script linting with shellcheck
+          shellcheck = pkgs.runCommand "shellcheck-check" {buildInputs = [pkgs.shellcheck];} ''
+            shellcheck ${./nix/concat-rust-example.sh} ${./nix/render-readme.sh}
+            touch $out
+          '';
+
+          # Shell script formatting with shfmt
+          shfmt = pkgs.runCommand "shfmt-check" {buildInputs = [pkgs.shfmt];} ''
+            shfmt -d ${./nix/concat-rust-example.sh} ${./nix/render-readme.sh}
+            touch $out
+          '';
         };
 
         # Development shell with linting and formatting tools
@@ -49,6 +61,8 @@
           buildInputs = [
             pkgs.statix
             pkgs.alejandra
+            pkgs.shellcheck
+            pkgs.shfmt
           ];
         };
       }
