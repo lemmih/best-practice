@@ -51,3 +51,17 @@ Enforced linting vastly improves the quality, readability, and conformity of cod
 - Use `shellcheck` for shell scripts
 - Use `statix` for Nix files
 - Use `cargo clippy` for Rust files
+- Use `hlint` for Haskell files
+- Use `markdownlint` for Markdown files
+- Use `yamllint` for YAML files
+- Use `commitlint` for commit messages
+
+### Code Formatting
+
+Consistent code formatting improves readability and reduces friction during code reviews. Formatters should be enforced in CI alongside linters.
+
+**Examples:**
+- Use `alejandra` for Nix files
+- Use `rustfmt` for Rust files
+- Use `prettier` for JavaScript/TypeScript/JSON/Markdown files
+- Use `shfmt` for shell scripts
