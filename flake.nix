@@ -15,15 +15,16 @@
       system: let
         pkgs = import nixpkgs {inherit system;};
 
-        # Generate concatenated file for AI agents
-        rust-example-concat = pkgs.runCommand "rust-example-concat" {} ''
+        # Generate GitHub Pages site with concatenated files and index.html
+        pages = pkgs.runCommand "pages" {} ''
           mkdir -p $out
           bash ${./nix/concat-rust-example.sh} ${./.} $out/rust-example.txt
+          bash ${./nix/render-readme.sh} ${./.} $out
         '';
       in {
         packages = {
-          default = rust-example-concat;
-          rust-example-concat = rust-example-concat;
+          default = pages;
+          pages = pages;
         };
       }
     );
