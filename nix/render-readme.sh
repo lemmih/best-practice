@@ -18,14 +18,14 @@ in_list=false
 
 while IFS= read -r line || [[ -n "$line" ]]; do
   # Handle headers
-  if [[ "$line" =~ ^#[[:space:]] ]]; then
+  if [[ "$line" =~ ^#[[:space:]]+ ]]; then
     if $in_list; then
       html_content+="</ul>"$'\n'
       in_list=false
     fi
     text="${line#\# }"
     html_content+="<h1>$text</h1>"$'\n'
-  elif [[ "$line" =~ ^##[[:space:]] ]]; then
+  elif [[ "$line" =~ ^##[[:space:]]+ ]]; then
     if $in_list; then
       html_content+="</ul>"$'\n'
       in_list=false
@@ -33,7 +33,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     text="${line#\#\# }"
     html_content+="<h2>$text</h2>"$'\n'
   # Handle list items with links
-  elif [[ "$line" =~ ^-[[:space:]] ]]; then
+  elif [[ "$line" =~ ^-[[:space:]]+ ]]; then
     if ! $in_list; then
       html_content+="<ul>"$'\n'
       in_list=true
