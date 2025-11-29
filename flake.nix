@@ -51,7 +51,7 @@
 
           # Shell script formatting with shfmt
           shfmt = pkgs.runCommand "shfmt-check" {buildInputs = [pkgs.shfmt];} ''
-            shfmt -d ${./nix/concat-rust-example.sh} ${./nix/render-readme.sh}
+            shfmt -d --indent 2 --case-indent ${./nix/concat-rust-example.sh} ${./nix/render-readme.sh}
             touch $out
           '';
         };
