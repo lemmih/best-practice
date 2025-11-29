@@ -16,10 +16,10 @@
         pkgs = import nixpkgs {inherit system;};
 
         # Generate GitHub Pages site with concatenated files and index.html
-        pages = pkgs.runCommand "pages" {} ''
+        pages = pkgs.runCommand "pages" {buildInputs = [pkgs.pandoc];} ''
           mkdir -p $out
           bash ${./nix/concat-rust-example.sh} ${./.} $out/rust-example.txt
-          bash ${./nix/render-readme.sh} ${./.} $out
+          bash ${./nix/render-readme.sh} ${pkgs.pandoc}/bin/pandoc ${./.} $out
         '';
       in {
         packages = {
