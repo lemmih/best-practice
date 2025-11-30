@@ -31,3 +31,6 @@ jobs:
 
       - name: Run nix flake check
         run: nix flake check --print-build-logs
+
+      - name: Run e2e tests
+        run: nix run .#e2e-tests --print-build-logs

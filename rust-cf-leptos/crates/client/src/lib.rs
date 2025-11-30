@@ -1,5 +1,3 @@
-#![allow(non_snake_case)]
-
 use app::App;
 use leptos::mount;
 use wasm_bindgen::prelude::wasm_bindgen;

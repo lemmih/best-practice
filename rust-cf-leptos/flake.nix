@@ -3,12 +3,9 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     rust-overlay.url = "github:oxalica/rust-overlay";
-    crane = {
-      url = "github:ipetkov/crane";
-    };
+    crane.url = "github:ipetkov/crane";
     wrangler = {
       url = "github:emrldnix/wrangler";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,7 +23,6 @@
   outputs = {
     self,
     nixpkgs,
-    nixpkgs-unstable,
     flake-utils,
     rust-overlay,
     crane,
@@ -40,10 +36,6 @@
         (import rust-overlay)
       ];
       pkgs = import nixpkgs {inherit system overlays;};
-      pkgsUnstable = import nixpkgs-unstable {
-        inherit system;
-        inherit overlays;
-      };
       inherit (pkgs) lib;
       fakeHash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
       rustToolchain = pkgs.rust-bin.fromRustupToolchainFile ./rust-toolchain.toml;
@@ -258,11 +250,6 @@
       };
       webappPath = website;
       e2eBinPath = e2eTests;
-      e2eRunner = pkgs.writeShellApplication {
-        name = "e2e-tests";
-        runtimeInputs = with pkgsUnstable; [cargo rustc];
-        text = builtins.readFile ./nix/e2e-runner.sh;
-      };
     in {
       devShells.default = pkgs.mkShell {
         packages = with pkgs; [
