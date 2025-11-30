@@ -286,7 +286,7 @@
       apps.e2e-tests = flake-utils.lib.mkApp {
         drv = pkgs.writeShellApplication {
           name = "e2e-tests";
-          runtimeInputs = with pkgs; [geckodriver curl wranglerPkg];
+          runtimeInputs = with pkgs; [geckodriver firefox curl wranglerPkg];
           text = ''
             WEBAPP_PATH=${webappPath}
             CURL_BIN=${pkgs.curl}/bin/curl
