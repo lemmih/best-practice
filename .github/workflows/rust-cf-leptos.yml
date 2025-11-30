@@ -1,0 +1,33 @@
+name: Rust CF Leptos CI
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - "rust-cf-leptos/**"
+      - ".github/workflows/rust-cf-leptos.yml"
+  pull_request:
+    paths:
+      - "rust-cf-leptos/**"
+      - ".github/workflows/rust-cf-leptos.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: rust-cf-leptos
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v14
+
+      - name: Configure Magic Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v8
+
+      - name: Run nix flake check
+        run: nix flake check --print-build-logs
