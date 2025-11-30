@@ -35,7 +35,7 @@ jobs:
           swap-storage: false
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v14
+        uses: DeterminateSystems/nix-installer-action@v21
 
       - name: Configure Magic Nix Cache
         uses: DeterminateSystems/magic-nix-cache-action@v8
