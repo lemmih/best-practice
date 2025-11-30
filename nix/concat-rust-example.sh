@@ -7,8 +7,9 @@ set -euo pipefail
 src_dir="$1"
 output="$2"
 
-# Dynamically find all files in rust-example/ plus specific extra files
-mapfile -t rust_example_files < <(find "$src_dir/rust-example" -type f | sort)
+# Dynamically find all files in rust-example/, excluding auto-generated files
+# Excludes: *.lock (Cargo.lock, flake.lock, etc.)
+mapfile -t rust_example_files < <(find "$src_dir/rust-example" -type f -not -name "*.lock" | sort)
 extra_files=("$src_dir/.github/workflows/rust-example.yml")
 
 # Generate header with file list
