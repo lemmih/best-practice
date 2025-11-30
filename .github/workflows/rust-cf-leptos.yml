@@ -21,7 +21,7 @@ jobs:
       run:
         working-directory: rust-cf-leptos
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Free disk space
         uses: jlumbroso/free-disk-space@v1.3.1
