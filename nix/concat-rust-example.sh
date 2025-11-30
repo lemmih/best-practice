@@ -7,27 +7,8 @@ set -euo pipefail
 src_dir="$1"
 output="$2"
 
-# Auto-generated files to exclude from concatenation
-excluded_files=(
-  "Cargo.lock"
-)
-
 # Dynamically find all files in rust-example/, excluding auto-generated files
-mapfile -t rust_example_files < <(
-  find "$src_dir/rust-example" -type f | while read -r file; do
-    basename=$(basename "$file")
-    skip=false
-    for excluded in "${excluded_files[@]}"; do
-      if [[ "$basename" == "$excluded" ]]; then
-        skip=true
-        break
-      fi
-    done
-    if [[ "$skip" == "false" ]]; then
-      echo "$file"
-    fi
-  done | sort
-)
+mapfile -t rust_example_files < <(find "$src_dir/rust-example" -type f -not -name "Cargo.lock" | sort)
 extra_files=("$src_dir/.github/workflows/rust-example.yml")
 
 # Generate header with file list
