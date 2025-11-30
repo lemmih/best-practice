@@ -1,23 +1,25 @@
 #!/usr/bin/env bash
-# Concatenate rust-example files for AI consumption
-# Usage: concat-rust-example.sh <source_dir> <output_file>
+# Concatenate project files for AI consumption
+# Usage: concat-project.sh <source_dir> <project_name> <output_file>
+# Example: concat-project.sh /path/to/repo rust-example /path/to/output.txt
 
 set -euo pipefail
 
 src_dir="$1"
-output="$2"
+project_name="$2"
+output="$3"
 
-# Dynamically find all files in rust-example/, excluding auto-generated files
+# Dynamically find all files in project directory, excluding auto-generated files
 # Excludes: *.lock (Cargo.lock, flake.lock, etc.)
-mapfile -t rust_example_files < <(find "$src_dir/rust-example" -type f -not -name "*.lock" | sort)
-extra_files=("$src_dir/.github/workflows/rust-example.yml")
+mapfile -t project_files < <(find "$src_dir/$project_name" -type f -not -name "*.lock" | sort)
+extra_files=("$src_dir/.github/workflows/$project_name.yml")
 
 # Generate header with file list
 {
-  echo "# rust-example"
+  echo "# $project_name"
   echo ""
   echo "Files:"
-  for file in "${rust_example_files[@]}"; do
+  for file in "${project_files[@]}"; do
     relpath="${file#"$src_dir"/}"
     echo "- $relpath"
   done
@@ -32,8 +34,8 @@ extra_files=("$src_dir/.github/workflows/rust-example.yml")
   echo ""
 } >"$output"
 
-# Concatenate each file from rust-example/
-for file in "${rust_example_files[@]}"; do
+# Concatenate each file from project directory
+for file in "${project_files[@]}"; do
   relpath="${file#"$src_dir"/}"
   {
     echo "## File: $relpath"

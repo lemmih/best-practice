@@ -7,3 +7,4 @@ A repository demonstrating best practices for AI-friendly code organization. Thi
 The following concatenated files are hosted on GitHub Pages for AI agent consumption:
 
 - [rust-example.txt](https://lemmih.github.io/best-practice/rust-example.txt) - A complete Rust project example with all source files bundled together
+- [rust-cf-leptos.txt](https://lemmih.github.io/best-practice/rust-cf-leptos.txt) - A Rust Cloudflare Workers project with Leptos SSR

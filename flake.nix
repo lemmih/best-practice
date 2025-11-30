@@ -20,7 +20,8 @@
         # Generate GitHub Pages site with concatenated files and index.html
         pages = pkgs.runCommand "pages" {buildInputs = [pkgs.pandoc];} ''
           mkdir -p $out
-          bash ${./nix/concat-rust-example.sh} ${./.} $out/rust-example.txt
+          bash ${./nix/concat-project.sh} ${./.} rust-example $out/rust-example.txt
+          bash ${./nix/concat-project.sh} ${./.} rust-cf-leptos $out/rust-cf-leptos.txt
           bash ${./nix/render-readme.sh} ${pkgs.pandoc}/bin/pandoc ${./.} $out
         '';
       in {
@@ -45,13 +46,13 @@
 
           # Shell script linting with shellcheck
           shellcheck = pkgs.runCommand "shellcheck-check" {buildInputs = [pkgs.shellcheck];} ''
-            shellcheck ${./nix/concat-rust-example.sh} ${./nix/render-readme.sh}
+            shellcheck ${./nix/concat-project.sh} ${./nix/render-readme.sh}
             touch $out
           '';
 
           # Shell script formatting with shfmt
           shfmt = pkgs.runCommand "shfmt-check" {buildInputs = [pkgs.shfmt];} ''
-            shfmt -d --indent 2 --case-indent ${./nix/concat-rust-example.sh} ${./nix/render-readme.sh}
+            shfmt -d --indent 2 --case-indent ${./nix/concat-project.sh} ${./nix/render-readme.sh}
             touch $out
           '';
         };
