@@ -40,9 +40,9 @@ impl TestRunner {
     }
 }
 
-impl Drop for TestRunner {
-    fn drop(&mut self) {
-        // WebDriver will be automatically closed when dropped
+impl TestRunner {
+    async fn quit(self) -> Result<()> {
+        self.driver.quit().await.context("quitting WebDriver")
     }
 }
 
@@ -162,11 +162,16 @@ macro_rules! run_tests {
 async fn main() -> Result<()> {
     let runner = TestRunner::new().await?;
 
-    run_tests!(&runner;
+    let result = run_tests!(&runner;
         "Main page is reachable" => test_main_page_reachable,
         "CSS link present in HTML" => test_css_link_present,
         "CSS file is accessible" => test_css_file_accessible,
         "CSS contains Tailwind classes" => test_css_contains_tailwind_classes,
         "CSS is valid Tailwind output" => test_css_is_valid_tailwind,
-    )
+    );
+
+    // Explicitly quit WebDriver to avoid Tokio runtime shutdown panic
+    runner.quit().await?;
+
+    result
 }
