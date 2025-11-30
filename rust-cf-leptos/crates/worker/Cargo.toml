@@ -1,0 +1,22 @@
+[package]
+name = "worker"
+version.workspace = true
+edition.workspace = true
+publish = false
+
+[lib]
+path = "src/lib.rs"
+crate-type = ["cdylib"]
+
+[dependencies]
+app = { path = "../app" }
+axum = { workspace = true }
+console_error_panic_hook = { workspace = true }
+console_log = { workspace = true }
+getrandom = { workspace = true }
+leptos = { workspace = true, features = ["ssr"] }
+leptos_axum = { workspace = true }
+leptos_config = { workspace = true }
+log = { workspace = true }
+tower-service = { workspace = true }
+worker = { workspace = true, features = ["http"] }

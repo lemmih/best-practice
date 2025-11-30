@@ -1,0 +1,15 @@
+# Build output
+target/
+
+# Wrangler build artifacts
+.wrangler/
+
+# Nix build symlinks
+result
+result-*
+
+# Node.js artifacts (wrangler dev dependency)
+node_modules/
+
+# Log files
+*.log
