@@ -3,7 +3,7 @@
 
   inputs = {
     # Pinned to stable release for reproducible builds
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     # Pinned to specific tag for reproducibility
     flake-utils.url = "github:numtide/flake-utils/v1.0.0";
   };
