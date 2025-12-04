@@ -58,7 +58,7 @@
 
           # GitHub Actions linting with actionlint
           actionlint = pkgs.runCommand "actionlint-check" {buildInputs = [pkgs.actionlint];} ''
-            actionlint ${./.github/workflows}/*.yml
+            find ${./.github/workflows} -name '*.yml' -o -name '*.yaml' | xargs -r actionlint
             touch $out
           '';
         };
