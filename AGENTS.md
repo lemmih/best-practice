@@ -54,6 +54,7 @@ Enforced linting vastly improves the quality, readability, and conformity of cod
 - Use `hlint` for Haskell files
 - Use `markdownlint` for Markdown files
 - Use `yamllint` for YAML files
+- Use `actionlint` for GitHub Actions workflow files
 - Use `commitlint` for commit messages
 
 ### Code Formatting

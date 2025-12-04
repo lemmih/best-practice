@@ -55,6 +55,12 @@
             shfmt -d --indent 2 --case-indent ${./nix/concat-project.sh} ${./nix/render-readme.sh}
             touch $out
           '';
+
+          # GitHub Actions linting with actionlint
+          actionlint = pkgs.runCommand "actionlint-check" {buildInputs = [pkgs.actionlint];} ''
+            actionlint ${./.github/workflows}/*.yml
+            touch $out
+          '';
         };
 
         # Development shell with linting and formatting tools
@@ -64,6 +70,7 @@
             pkgs.alejandra
             pkgs.shellcheck
             pkgs.shfmt
+            pkgs.actionlint
           ];
         };
       }
