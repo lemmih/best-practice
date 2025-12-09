@@ -1,12 +1,19 @@
 #![allow(non_snake_case)]
 
 use app::{App, shell};
-use axum::{Extension, Router};
-use leptos_axum::{LeptosRoutes, generate_route_list};
+use axum::{Extension, Router, routing::post};
+use leptos_axum::{LeptosRoutes, generate_route_list, handle_server_fns_with_context};
 use leptos_config::LeptosOptions;
 use std::sync::Arc;
 use tower_service::Service;
 use worker::{Context, Env, HttpRequest, Result, event};
+
+/// Register server functions at worker start.
+/// This must be called before any server functions can be handled.
+#[event(start)]
+fn register() {
+    server_fn::axum::register_explicit::<app::AddNumbers>();
+}
 
 fn router(env: Env) -> Router<()> {
     let leptos_options = LeptosOptions::builder()
@@ -19,6 +26,11 @@ fn router(env: Env) -> Router<()> {
     }
 
     Router::new()
+        // Handle server function requests at /api/*
+        .route(
+            "/api/{*fn_name}",
+            post(|req| handle_server_fns_with_context(|| {}, req)),
+        )
         .leptos_routes(&leptos_options, routes, {
             let leptos_options = leptos_options.clone();
             move || shell(leptos_options.clone())
