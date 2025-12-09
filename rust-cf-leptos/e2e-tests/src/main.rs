@@ -130,6 +130,59 @@ async fn test_css_is_valid_tailwind(runner: &TestRunner) -> Result<()> {
     Ok(())
 }
 
+/// Test: Server function demo section is present
+async fn test_server_function_section_present(runner: &TestRunner) -> Result<()> {
+    let body = runner.get_page_source().await?;
+
+    assert!(
+        body.contains("Server Function Demo"),
+        "HTML should contain 'Server Function Demo' section"
+    );
+    assert!(
+        body.contains("Calculate 2 + 3"),
+        "HTML should contain the server function button"
+    );
+
+    Ok(())
+}
+
+/// Test: Server function executes and returns correct result
+async fn test_server_function_executes(runner: &TestRunner) -> Result<()> {
+    runner.driver.goto(&runner.base_url).await?;
+
+    // Find and click the "Calculate 2 + 3" button
+    let button = runner
+        .driver
+        .find(By::XPath("//button[contains(text(), 'Calculate 2 + 3')]"))
+        .await
+        .context("finding server function button")?;
+
+    button
+        .click()
+        .await
+        .context("clicking server function button")?;
+
+    // Wait for the result to appear (the server function should return 5)
+    tokio::time::sleep(Duration::from_millis(500)).await;
+
+    // Check that the result shows "5"
+    let result_element = runner
+        .driver
+        .find(By::Id("server-result"))
+        .await
+        .context("finding server result element")?;
+
+    let result_text = result_element.text().await.context("getting result text")?;
+
+    assert!(
+        result_text.contains('5'),
+        "Server function should return 5 for 2 + 3, but got: {}",
+        result_text
+    );
+
+    Ok(())
+}
+
 // ============================================================================
 // Test Runner
 // ============================================================================
@@ -168,6 +221,8 @@ async fn main() -> Result<()> {
         "CSS file is accessible" => test_css_file_accessible,
         "CSS contains Tailwind classes" => test_css_contains_tailwind_classes,
         "CSS is valid Tailwind output" => test_css_is_valid_tailwind,
+        "Server function section present" => test_server_function_section_present,
+        "Server function executes correctly" => test_server_function_executes,
     );
 
     // Explicitly quit WebDriver to avoid Tokio runtime shutdown panic

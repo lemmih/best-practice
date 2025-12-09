@@ -11,7 +11,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 console_error_panic_hook = { workspace = true }
 console_log = { workspace = true }
-app = { path = "../app" }
+app = { path = "../app", features = ["hydrate"] }
 leptos = { workspace = true, features = ["hydrate"] }
 log = { workspace = true }
 wasm-bindgen = { workspace = true }

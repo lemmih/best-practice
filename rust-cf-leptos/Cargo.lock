@@ -37,6 +37,7 @@ dependencies = [
  "leptos_config",
  "leptos_meta",
  "leptos_router",
+ "server_fn",
 ]
 
 [[package]]
@@ -2976,6 +2977,7 @@ dependencies = [
  "leptos_axum",
  "leptos_config",
  "log",
+ "server_fn",
  "tower-service",
  "worker 0.7.1",
 ]

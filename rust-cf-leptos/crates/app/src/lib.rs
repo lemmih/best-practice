@@ -9,10 +9,22 @@ use leptos_router::{
     path,
 };
 
+/// A simple server function that adds two numbers on the server.
+/// This demonstrates server-side computation with Leptos server functions.
+#[server(AddNumbers, "/api")]
+pub async fn add_numbers(a: i32, b: i32) -> Result<i32, ServerFnError> {
+    // This code only runs on the server
+    Ok(a + b)
+}
+
 #[component]
 fn Home() -> impl IntoView {
     let (count, set_count) = signal(0);
     let increment = move |_| *set_count.write() += 1;
+
+    // Server function action
+    let add_action = ServerAction::<AddNumbers>::new();
+    let result = add_action.value();
 
     view! {
       <section class="mx-auto max-w-2xl space-y-6 py-12 text-center">
@@ -29,6 +41,29 @@ fn Home() -> impl IntoView {
             "Clicks: "
             <span class="font-mono">{count}</span>
           </button>
+        </div>
+
+        // Server function demo section
+        <div class="mt-8 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+          <h2 class="mb-4 text-xl font-semibold text-slate-800">"Server Function Demo"</h2>
+          <p class="mb-4 text-slate-600">"Click the button to compute 2 + 3 on the server."</p>
+          <ActionForm action=add_action>
+            <input type="hidden" name="a" value="2" />
+            <input type="hidden" name="b" value="3" />
+            <button type="submit" class="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-500">
+              "Calculate 2 + 3"
+            </button>
+          </ActionForm>
+          <p class="mt-4 text-lg" id="server-result">
+            "Result: "
+            <span class="font-mono font-bold">
+              {move || match result.get() {
+                Some(Ok(val)) => val.to_string(),
+                Some(Err(e)) => format!("Error: {}", e),
+                None => "—".to_string(),
+              }}
+            </span>
+          </p>
         </div>
       </section>
     }
