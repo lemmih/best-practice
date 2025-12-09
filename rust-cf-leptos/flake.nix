@@ -343,7 +343,7 @@
 
         # Leptos view! macro formatting
         leptosfmt = pkgs.runCommand "leptosfmt-check" {buildInputs = [pkgs.leptosfmt];} ''
-          leptosfmt --check ${src}/crates
+          leptosfmt --config-file ${./leptosfmt.toml} --check ${src}/crates
           touch $out
         '';
 
