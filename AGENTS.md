@@ -64,5 +64,6 @@ Consistent code formatting improves readability and reduces friction during code
 **Examples:**
 - Use `alejandra` for Nix files
 - Use `rustfmt` for Rust files
+- Use `leptosfmt` for Leptos view! macros
 - Use `prettier` for JavaScript/TypeScript/JSON/Markdown files
 - Use `shfmt` for shell scripts

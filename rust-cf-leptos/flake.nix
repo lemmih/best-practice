@@ -272,6 +272,7 @@
           cargo-audit
           # Formatting tools
           alejandra.packages.${system}.default
+          leptosfmt
           shfmt
           taplo
         ];
@@ -339,6 +340,12 @@
 
         # Cargo.toml formatting
         taplo = craneLib.taploFmt {inherit src;};
+
+        # Leptos view! macro formatting
+        leptosfmt = pkgs.runCommand "leptosfmt-check" {buildInputs = [pkgs.leptosfmt];} ''
+          leptosfmt --check ${src}/crates
+          touch $out
+        '';
 
         # Security audit
         audit = craneLib.cargoAudit {
