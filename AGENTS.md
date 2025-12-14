@@ -67,3 +67,10 @@ Consistent code formatting improves readability and reduces friction during code
 - Use `leptosfmt` for Leptos view! macros
 - Use `prettier` for JavaScript/TypeScript/JSON/Markdown files
 - Use `shfmt` for shell scripts
+
+### Secure by Design
+
+- Never build SQL with naive string interpolation—always use parameterized queries.
+- Run CVE scanners (e.g., `cargo audit`) with pinned CVE databases that auto-update at least monthly.
+- Validate inputs on the server; client-side checks are only for UX and must not be relied on for security.
+- Keep passwords, tokens, and secrets out of git entirely (including private repos); manage them with dedicated secret-management systems.
